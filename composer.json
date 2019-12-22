@@ -1,0 +1,47 @@
+{
+    "name": "friendsmore/laravel-weapp-subscribe-notification",
+    "description": "Wechat applet subscription message service notification for laravel framework",
+    "type": "library",
+    "require": {
+        "php": ">=7.1.3",
+        "ext-json": "^1.6",
+        "laravel/lumen-framework": "5.8.*",
+        "overtrue/laravel-wechat": "~5.0",
+        "friendsmore/laravel-base": "^2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=7.0",
+        "orchestra/testbench": "^3.7"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "herry.yao",
+            "email": "herry.yao@friendsmore.com.cn"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Friendsmore\\laravelWeAppSubscribeNotification\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Friendsmore\\laravelWeAppSubscribeNotification\\Test\\": "tests"
+        }
+    },
+    "repositories": {
+        "0": {
+            "type": "vcs",
+            "url": "git@git.qinjiajia.cn:laravel-lib/laravel-cursor-pagination.git"
+        },
+        "1": {
+            "type": "vcs",
+            "url": "git@git.qinjiajia.cn:laravel-lib/laravel-base.git"
+        },
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
+    }
+}
