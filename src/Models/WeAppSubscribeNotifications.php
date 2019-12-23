@@ -56,7 +56,7 @@ class WeAppSubscribeNotifications extends Model
         'app_id' => 'string',
         'pri_tmpl_id' => 'string',
         'content' => 'array',
-        'scene' => 'array',
+        'scenes' => 'array',
         'type' => 'enum',
         'tid' => 'string',
         'md5' => 'string'
