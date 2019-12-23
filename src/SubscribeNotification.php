@@ -30,7 +30,15 @@ interface SubscribeNotification
      * @param $notifiable
      * @return string
      */
-    public function getAuthorizedNo($notifiable): string;
+    public function getSceneId($notifiable): ?string;
+
+    /**
+     * 获取场景
+     *
+     * @param $notifiable
+     * @return string
+     */
+    public function getScene($notifiable): string;
 
     /**
      * 获取模版信息

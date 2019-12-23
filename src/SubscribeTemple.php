@@ -5,6 +5,7 @@ namespace Friendsmore\laravelWeAppSubscribeNotification;
 
 
 use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotifications;
+use Illuminate\Support\Str;
 
 class SubscribeTemple
 {
@@ -14,8 +15,8 @@ class SubscribeTemple
     private $keywords;
     /** @var string|null */
     private $appId;
-    /** @var string */
-    private $sceneDesc;
+    /** @var array|null */
+    private $scenes;
 
     public function setTid(string $tid): SubscribeTemple
     {
@@ -50,15 +51,17 @@ class SubscribeTemple
         return $this->appId;
     }
 
-    public function setSceneDesc(string $sceneDesc): SubscribeTemple
+    public function setScenes(?array $scenes): SubscribeTemple
     {
-        $this->sceneDesc = $sceneDesc;
+        $this->scenes = collect($scenes)->map(function ($scenes) {
+            return Str::snake(basename($scenes));
+        });
         return $this;
     }
 
-    public function getSceneDesc(): ?string
+    public function getScenes(): ?array
     {
-        return $this->sceneDesc;
+        return $this->scenes;
     }
 
 
@@ -66,12 +69,22 @@ class SubscribeTemple
     {
         $this->setTid($subscribeMessage->getTid())
             ->setKeywords($subscribeMessage->getKeywords())
-            ->setSceneDesc($subscribeMessage->getSceneDesc());
+            ->setScenes($subscribeMessage->getScenes());
         return $this;
+    }
+
+    public function getHash()
+    {
+        return json_encode(json_encode([$this->getAppId(), $this->getTid(), $this->getKeywords()], JSON_UNESCAPED_UNICODE));
+    }
+
+    public function updateOrCreate()
+    {
+        return WeAppSubscribeNotifications::updateOrCreatePriTmpl($this);
     }
 
     public function getPriTemp()
     {
-        return WeAppSubscribeNotifications::getPriTmpl($this->getAppId(), $this->getTid(), $this->getKeywords(), $this->getSceneDesc());
+        return WeAppSubscribeNotifications::getPriTmpl($this->getHash());
     }
 }

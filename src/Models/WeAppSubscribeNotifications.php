@@ -8,6 +8,7 @@ use Friendsmore\LaravelBase\Model;
 use Friendsmore\laravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
 use Friendsmore\laravelWeAppSubscribeNotification\PriTmpl\PriTmplKeywords;
 use Friendsmore\LaravelWeAppSubscribeNotification\SubscribeChannel;
+use Friendsmore\laravelWeAppSubscribeNotification\SubscribeTemple;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -22,9 +23,10 @@ use Illuminate\Support\Facades\Cache;
  * @property string $tid 模板库标题ID
  * @property string|null $title 模版标题
  * @property string $pri_tmpl_id 订阅模版ID
- * @property string $md5 模板标识(模板标题ID与模板关键词列表MD5产生)
+ * @property string $hash 模板标识(模板标题ID与模板关键词列表MD5产生)
  * @property array $content 模版内容，格式:[{"kid":"2","name":"会议时间","rule":"date"}]
  * @property string $type 模版类型，2 one_time 为一次性订阅|3 long_term 为长期订阅
+ * @property array $scenes 授权场景
  * @method static Builder|WeAppSubscribeNotifications newModelQuery()
  * @method static Builder|WeAppSubscribeNotifications newQuery()
  * @method static Builder|WeAppSubscribeNotifications query()
@@ -32,7 +34,7 @@ use Illuminate\Support\Facades\Cache;
  * @method static Builder|WeAppSubscribeNotifications whereContent($value)
  * @method static Builder|WeAppSubscribeNotifications whereCreatedAt($value)
  * @method static Builder|WeAppSubscribeNotifications whereId($value)
- * @method static Builder|WeAppSubscribeNotifications whereMd5($value)
+ * @method static Builder|WeAppSubscribeNotifications whereHash($value)
  * @method static Builder|WeAppSubscribeNotifications wherePriTmplId($value)
  * @method static Builder|WeAppSubscribeNotifications whereTid($value)
  * @method static Builder|WeAppSubscribeNotifications whereTitle($value)
@@ -41,7 +43,7 @@ use Illuminate\Support\Facades\Cache;
  */
 class WeAppSubscribeNotifications extends Model
 {
-    const CACHE_FOR_WE_APP_TMPL_NOTIFICATIONS = 'CACHE_FOR_WE_APP_SUBSCRIBE_TMPL_NOTIFICATIONS:%s:%s';
+    const CACHE_FOR_WE_APP_TMPL_NOTIFICATIONS = 'CACHE_FOR_WE_APP_SUBSCRIBE_TMPL_NOTIFICATIONS:%s';
     const CACHE_FOR_TAGS = ['we_app_subscribe_tmpl'];
 
     const TYPES = [
@@ -54,6 +56,7 @@ class WeAppSubscribeNotifications extends Model
         'app_id' => 'string',
         'pri_tmpl_id' => 'string',
         'content' => 'array',
+        'scene' => 'array',
         'type' => 'enum',
         'tid' => 'string',
         'md5' => 'string'
@@ -67,33 +70,47 @@ class WeAppSubscribeNotifications extends Model
         'updated_at',
     ];
 
+    public static function updateOrCreatePriTmpl(SubscribeTemple $subscribeTemple): bool
+    {
+        $temple = $template = self::whereAppId($subscribeTemple->getAppId())->whereHash($subscribeTemple->getHash())->first();
+        if ($temple) {
+            if (collect($template->scenes)->diffAssoc($temple->gets)->isNotEmpty()) {
+                $template->update(['scenes' => $subscribeTemple->getScenes()]);
+            }
+        } else {
+            $priTmpl = (new SubscribeChannel())->addPriTmpl($subscribeTemple->getHash(), $subscribeTemple->getTid(), $subscribeTemple->getKeywords(), $subscribeTemple->getScenes());
+            $type = $priTmpl->getPriTmplKeywords()->getType();
+            $template = self::create([
+                'app_id' => $subscribeTemple->getAppId(),
+                'tid' => $subscribeTemple->getTid(),
+                'title' => $priTmpl->getPriTmplKeywords()->getName(),
+                'type' => isset(self::TYPES[$type]) ? self::TYPES[$type] : $type,
+                'pri_tmpl_id' => $priTmpl->getPriTmplId(),
+                'hash' => $subscribeTemple->getHash(),
+                'content' => $priTmpl->getPriTmplKeywords()->getContent()->all(),
+                'scenes' => $subscribeTemple->getScenes()
+            ]);
+        }
+        if (is_null($temple)) {
+            return false;
+        }
+        $cacheKey = self::getCacheKey($temple->hash);
+        if (Cache::tags(self::getCacheTags())->has($cacheKey)) {
+            Cache::tags(self::getCacheTags())->forget($cacheKey);
+        }
+        return true;
+    }
+
     /**
      * 获取模版信息
      *
-     * @param string $appId
-     * @param string $tid
-     * @param array $keywords
-     * @param string|null $sceneDesc
+     * @param string $hash
      * @return PriTmpl|null
      */
-    public static function getPriTmpl(string $appId, string $tid, array $keywords, ?string $sceneDesc = null): ?WeAppSubscribeNotifications
+    public static function getPriTmpl(string $hash): ?PriTmpl
     {
-        return Cache::tags(self::getCacheTags())->rememberForever(self::getCacheKey($appId, $tid, $keywords), function () use ($appId, $tid, $keywords, $sceneDesc) {
-            $md5 = self::getMd5($tid, $keywords);
-            $template = self::whereAppId($appId)->whereMd5($md5)->first();
-            if (!$template) {
-                $priTmpl = (new SubscribeChannel())->addPriTmpl($appId, $tid, $keywords, $sceneDesc);
-                $type = $priTmpl->getPriTmplKeywords()->getType();
-                $template = self::create([
-                    'app_id' => $appId,
-                    'tid' => $tid,
-                    'title' => $priTmpl->getPriTmplKeywords()->getName(),
-                    'type' => isset(self::TYPES[$type]) ? self::TYPES[$type] : $type,
-                    'pri_tmpl_id' => $priTmpl->getPriTmplId(),
-                    'md5' => $md5,
-                    'content' => $priTmpl->getPriTmplKeywords()->getContent()->all()
-                ]);
-            }
+        return Cache::tags(self::getCacheTags())->rememberForever(self::getCacheKey($hash), function () use ($hash) {
+            $template = self::whereHash($hash)->first();
             if (is_null($template)) {
                 return null;
             }
@@ -103,18 +120,14 @@ class WeAppSubscribeNotifications extends Model
         });
     }
 
-    public static function getMd5(string $tid, array $keywords)
-    {
-        return md5(json_encode([$tid, $keywords]));
-    }
 
     public static function getCacheTags()
     {
         return self::CACHE_FOR_TAGS;
     }
 
-    private static function getCacheKey(string $appId, string $tid, array $keywords)
+    private static function getCacheKey(string $hash)
     {
-        return sprintf(self::CACHE_FOR_WE_APP_TMPL_NOTIFICATIONS, $appId, self::getMd5($tid, $keywords));
+        return sprintf(self::CACHE_FOR_WE_APP_TMPL_NOTIFICATIONS, $hash);
     }
 }

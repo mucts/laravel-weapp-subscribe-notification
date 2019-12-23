@@ -25,9 +25,8 @@ class SubscribeMessage implements Arrayable
     private $rateLimit;
     /** @var string */
     private $driver;
-    /** @var string */
-    private $sceneDesc;
-    /** @var string */
+    /** @var array */
+    private $scenes;
 
     const DRIVER_WE_APP = 'weapp';
     const DRIVER_WE_APPS = 'weapps';
@@ -163,23 +162,23 @@ class SubscribeMessage implements Arrayable
     /**
      * Set subscribe scene desc
      *
-     * @param string $sceneDesc
+     * @param array $scenes
      * @return SubscribeMessage
      */
-    public function setSceneDesc(string $sceneDesc): SubscribeMessage
+    public function setScenes(?array $scenes): SubscribeMessage
     {
-        $this->sceneDesc = $sceneDesc;
+        $this->scenes = $scenes;
         return $this;
     }
 
     /**
      * Get subscribe scene desc
      *
-     * @return string|null
+     * @return array|null
      */
-    public function getSceneDesc(): ?string
+    public function getScenes(): ?array
     {
-        return $this->sceneDesc;
+        return $this->scenes;
     }
 
     /**

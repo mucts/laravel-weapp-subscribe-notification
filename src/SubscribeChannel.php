@@ -51,7 +51,7 @@ class SubscribeChannel
                     info('no available to user:' . $toUser);
                     return;
                 }
-                if (!SubscribeAuthorize::hadAutoPriTmplId($appId, $notification->getAuthorizedNo($notifiable), $toUser)) {
+                if (!SubscribeAuthorize::hadAutoPriTmplId($appId, $message->getPriTmplId(), $notification->getScene($notifiable), $notification->getSceneId($notifiable), $toUser)) {
                     info('User not authorized,pri_tmpl_id:%s,openid:%s', $message->getPriTmplId(), $toUser);
                     return;
                 }
@@ -71,7 +71,7 @@ class SubscribeChannel
                 }
                 // 若消息有发送频率限制，设置缓存
                 self::setRateLimited($rateLimitKey, $message->getRateLimit('tts'));
-                SubscribeAuthorize::getPriTmplId($appId, $notification->getAuthorizedNo($notifiable), $toUser);
+                SubscribeAuthorize::getPriTmplId($appId, $message->getPriTmplId(), $notification->getScene($notifiable), $notification->getSceneId($notifiable), $toUser);
             });
         }
     }
@@ -95,17 +95,17 @@ class SubscribeChannel
      * @param string $appId
      * @param string $tid
      * @param array $keywords
-     * @param string $sceneDesc
+     * @param array|null $sceneDesc
      * @return PriTmpl|null
      */
-    public function addPriTmpl(string $appId, string $tid, array $keywords, ?string $sceneDesc = null)
+    public function addPriTmpl(string $appId, string $tid, array $keywords, ?array $sceneDesc = null)
     {
         $cacheKey = sprintf(self::CACHE_SUBSCRIBE_TMPL_ID_KEY, $appId, $tid);
         return Cache::rememberForever($cacheKey, function () use ($appId, $tid, $keywords, $sceneDesc) {
             $miniProgram = EasyWeChat::miniProgram($this->getConfigName($appId));
             $title = $this->getPriTmplTitle($appId, $tid);
             $keywords = (new PriTmplKeywords($tid, $title, $this->getPriTmplKeyWords($appId, $tid)))->setKeywords($keywords);
-            $res = $miniProgram->subscribe_message->addTemplate($tid, $keywords->getKids(), config('app.name') . ($sceneDesc ?: $keywords->getName()));
+            $res = $miniProgram->subscribe_message->addTemplate($tid, $keywords->getKids(), config('app.name') . ($sceneDesc ? implode(',', $sceneDesc) : $keywords->getName()));
             if (isset($res['errcode']) && $res['errcode'] != 0) {
                 throw new \Exception($res['errmsg'], $res['errcode']);
             }
