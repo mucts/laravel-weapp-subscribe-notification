@@ -24,21 +24,21 @@ class DropSubscribeCommand extends Command
             DB::transaction(function () {
                 collect(config('wechat.mini_program'))->each(function ($value, $key) {
                     $miniProgram = EasyWeChat::miniProgram($key);
-                    while (true) {
-                        $this->info('app id:' . $value['app_id']);
-                        $res = $miniProgram->subscribe_message->getTemplates();
-                        if (isset($res['errcode']) && $res['errcode'] != 0 || count($res['data']) == 0) break;
-                        $bar = $this->output->createProgressBar(count($res['data']));
-                        collect($res['data'])->each(function ($item) use ($miniProgram, $bar) {
-                            $res = $miniProgram->subscribe_message->deleteTemplate('priTmplId');
-                            if (isset($res['errcode']) && $res['errcode'] != 0) {
-                                $this->error($res['errmsg']);
-                            }
-                            $bar->advance();
-                        });
-                        $this->info('');
-                        $bar->finish();
+                    $this->info('app id:' . $value['app_id']);
+                    $res = $miniProgram->subscribe_message->getTemplates();
+                    if (isset($res['errcode']) && $res['errcode'] != 0 || count($res['data']) == 0) {
+                        return;
                     }
+                    $bar = $this->output->createProgressBar(count($res['data']));
+                    collect($res['data'])->each(function ($item) use ($miniProgram, $bar) {
+                        $res = $miniProgram->subscribe_message->deleteTemplate($item['priTmplId']);
+                        if (isset($res['errcode']) && $res['errcode'] != 0) {
+                            $this->error($res['errmsg']);
+                        }
+                        $bar->advance();
+                    });
+                    $this->info('');
+                    $bar->finish();
                 });
                 // 重构表结构并删除相应标签缓存
                 WeAppSubscribeNotifications::truncate();

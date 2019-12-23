@@ -63,8 +63,8 @@ class SubscribeTemple
     public function setScenes(?array $scenes): SubscribeTemple
     {
         $this->scenes = collect($scenes)->map(function ($scenes) {
-            return Str::snake(basename($scenes));
-        });
+            return Str::snake(class_basename($scenes));
+        })->all();
         return $this;
     }
 
@@ -75,7 +75,7 @@ class SubscribeTemple
 
     public function getSceneValue(): ?string
     {
-        return $this->scenes ? implode(',', $this->scenes) : $this->getName();
+        return Str::limit($this->getName() ?: ($this->scenes ? implode(',', $this->scenes) : config('app.name')), 15, '');
     }
 
 

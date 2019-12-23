@@ -72,9 +72,9 @@ class WeAppSubscribeNotifications extends Model
 
     public static function updateOrCreatePriTmpl(SubscribeTemple $subscribeTemple): bool
     {
-        $temple = $template = self::whereAppId($subscribeTemple->getAppId())->whereHash($subscribeTemple->getHash())->first();
-        if ($temple) {
-            if (collect($template->scenes)->diffAssoc($temple->gets)->isNotEmpty()) {
+        $template = self::whereAppId($subscribeTemple->getAppId())->whereHash($subscribeTemple->getHash())->first();
+        if ($template) {
+            if (collect($template->scenes)->diffAssoc($subscribeTemple->getScenes())->isNotEmpty()) {
                 $template->update(['scenes' => $subscribeTemple->getScenes()]);
             }
         } else {
@@ -86,18 +86,19 @@ class WeAppSubscribeNotifications extends Model
                 'type' => $subscribeTemple->getType(),
                 'pri_tmpl_id' => $priTmpl->getPriTmplId(),
                 'hash' => $subscribeTemple->getHash(),
-                'content' => $priTmpl->getPriTmplKeywords()->getContent()->all(),
+                'content' => $priTmpl->getPriTmplKeywords()->getContent()->values()->toArray(),
                 'scenes' => $subscribeTemple->getScenes()
             ]);
         }
-        if (is_null($temple)) {
+        if (is_null($template)) {
             return false;
         }
-        $cacheKey = self::getCacheKey($temple->hash);
+        $cacheKey = self::getCacheKey($template->hash);
         if (Cache::tags(self::getCacheTags())->has($cacheKey)) {
             Cache::tags(self::getCacheTags())->forget($cacheKey);
         }
         return true;
+
     }
 
     /**

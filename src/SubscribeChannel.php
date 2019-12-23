@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 class SubscribeChannel
 {
     const CACHE_SUBSCRIBE_TMPL_TID_KEY = 'WE_APP_SUBSCRIBE_TMPL_MSG_TID:%s';
-    const CACHE_SUBSCRIBE_TMPL_ID_KEY = 'WE_APP_SUBSCRIBE_TMPL_ID:%s:$s';
+    const CACHE_SUBSCRIBE_TMPL_ID_KEY = 'WE_APP_SUBSCRIBE_TMPL_ID:%s';
     const CACHE_SUBSCRIBE_TMPL_TITLE_KEY = 'WE_APP_SUBSCRIBE_TMPL_TITLE:%s';
 
     public function send(RoutesNotifications $notifiable, SubscribeNotification $notification): void
@@ -97,7 +97,7 @@ class SubscribeChannel
      */
     public function addPriTmpl(SubscribeTemple $subscribeTemple)
     {
-        $cacheKey = sprintf(self::CACHE_SUBSCRIBE_TMPL_ID_KEY, $subscribeTemple->getAppId(), $subscribeTemple->getTid());
+        $cacheKey = sprintf(self::CACHE_SUBSCRIBE_TMPL_ID_KEY, $subscribeTemple->getHash());
         return Cache::rememberForever($cacheKey, function () use ($subscribeTemple) {
             $miniProgram = EasyWeChat::miniProgram($this->getConfigName($subscribeTemple->getAppId()));
             $keywords = (new PriTmplKeywords($subscribeTemple->getTid(), $subscribeTemple->getType(), $subscribeTemple->getName(), $this->getPriTmplKeyWords($subscribeTemple->getAppId(), $subscribeTemple->getTid())))->setKeywords($subscribeTemple->getKeywords());
