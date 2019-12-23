@@ -20,7 +20,7 @@ class PriTmplKeywords implements Arrayable
     /** @var string */
     private $name;
 
-    public function __construct(string $tid,string $type,string $name, array $content)
+    public function __construct(string $tid, string $type, ?string $name, array $content)
     {
         $this->tid = $tid;
         $this->type = $type;

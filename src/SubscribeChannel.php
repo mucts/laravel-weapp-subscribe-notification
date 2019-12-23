@@ -101,7 +101,7 @@ class SubscribeChannel
         return Cache::rememberForever($cacheKey, function () use ($subscribeTemple) {
             $miniProgram = EasyWeChat::miniProgram($this->getConfigName($subscribeTemple->getAppId()));
             $keywords = (new PriTmplKeywords($subscribeTemple->getTid(), $subscribeTemple->getType(), $subscribeTemple->getName(), $this->getPriTmplKeyWords($subscribeTemple->getAppId(), $subscribeTemple->getTid())))->setKeywords($subscribeTemple->getKeywords());
-            $res = $miniProgram->subscribe_message->addTemplate($subscribeTemple->getAppId(), $keywords->getKids(), config('app.name') . ($subscribeTemple->getSceneValue() ?: $keywords->getName()));
+            $res = $miniProgram->subscribe_message->addTemplate($subscribeTemple->getTid(), $keywords->getKids(), $subscribeTemple->getSceneValue());
             if (isset($res['errcode']) && $res['errcode'] != 0) {
                 throw new \Exception($res['errmsg'], $res['errcode']);
             }
