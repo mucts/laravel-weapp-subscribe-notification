@@ -17,6 +17,15 @@ class SubscribeTemple
     private $appId;
     /** @var array|null */
     private $scenes;
+    /** @var string|null */
+    private $name;
+    /** @var int */
+    private $type;
+
+    public function __construct()
+    {
+        $this->setType(WeAppSubscribeNotifications::TYPES[2]);
+    }
 
     public function setTid(string $tid): SubscribeTemple
     {
@@ -64,6 +73,11 @@ class SubscribeTemple
         return $this->scenes;
     }
 
+    public function getSceneValue(): ?string
+    {
+        return $this->scenes ? implode(',', $this->scenes) : $this->getName();
+    }
+
 
     public function setMessage(SubscribeMessage $subscribeMessage): SubscribeTemple
     {
@@ -75,7 +89,29 @@ class SubscribeTemple
 
     public function getHash()
     {
-        return json_encode(json_encode([$this->getAppId(), $this->getTid(), $this->getKeywords()], JSON_UNESCAPED_UNICODE));
+        return md5(json_encode([$this->getAppId(), $this->getTid(), $this->getKeywords()], JSON_UNESCAPED_UNICODE));
+    }
+
+    public function setName(?string $name): SubscribeTemple
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setType(?string $type): SubscribeTemple
+    {
+        $this->type = $type;
+        return $this;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 
     public function updateOrCreate()

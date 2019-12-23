@@ -23,12 +23,18 @@ class UpdateSubscribeCommand extends Command
             $configs = config('wechat_subscribe_template.' . $key, []);
             $bar = $this->output->createProgressBar(count($configs));
             collect($configs)->each(function ($item) use ($appId, $bar) {
-                (new SubscribeTemple())
+                $subscribeTmpl = (new SubscribeTemple())
                     ->setAppId($appId)
                     ->setKeywords($item['keywords'])
                     ->setTid($item['tid'])
-                    ->setScenes($item['scenes'])
-                    ->updateOrCreate();
+                    ->setScenes($item['scenes']);
+                if (isset($item['type']) && !is_null($item['type'])) {
+                    $subscribeTmpl->setType($item['type']);
+                }
+                if (isset($item['name']) && !is_null($item['name'])) {
+                    $subscribeTmpl->setName($item['name']);
+                }
+                $subscribeTmpl->updateOrCreate();
                 $bar->advance();
             });
             $this->info('');

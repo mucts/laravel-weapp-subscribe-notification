@@ -20,11 +20,11 @@ class PriTmplKeywords implements Arrayable
     /** @var string */
     private $name;
 
-    public function __construct(string $tid, array $titles, array $content)
+    public function __construct(string $tid,string $type,string $name, array $content)
     {
         $this->tid = $tid;
-        $this->type = $titles['type'];
-        $this->name = $titles['name'];
+        $this->type = $type;
+        $this->name = $name;
         $this->content = collect($content)->map(function ($item) {
             return (new PriKidInfo())
                 ->setKid($item['kid'])

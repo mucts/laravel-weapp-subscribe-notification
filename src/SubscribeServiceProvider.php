@@ -8,15 +8,13 @@ use Friendsmore\LaravelWeAppSubscribeNotification\Commands\DropSubscribeCommand;
 use Friendsmore\LaravelWeAppSubscribeNotification\Commands\SubscribeTableCommand;
 use Friendsmore\LaravelWeAppSubscribeNotification\Commands\UpdateSubscribeCommand;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Foundation\Application as LaravelApplication;
+use Illuminate\Support\Str;
 
 class SubscribeServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->setupConfig();
         if (version_compare($this->app->version(), '5.1', ">=") or starts_with($this->app->version(), "Lumen")) {
-
             if ($this->app->runningInConsole()) {
                 $this->commands([
                     DropSubscribeCommand::class,
@@ -29,22 +27,18 @@ class SubscribeServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        //
-    }
+        $this->mergeConfigFrom(
+            dirname(__FILE__) . '/config/wechat_subscribe_template.php', 'wechat_subscribe_template'
+        );
 
-    /**
-     * Setup the config.
-     */
-    protected function setupConfig()
-    {
-        $source = realpath(__DIR__.'/config/wechat_subscribe_template.php');
+        $this->publishes([
+            dirname(__FILE__) . '/config/' => config_path(),
+        ], "wechat_subscribe_template.config");
 
-        if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
-            $this->publishes([$source => config_path('wechat_subscribe_template.php')], 'wechat_subscribe_template');
-        } elseif ($this->app instanceof LumenApplication) {
-            $this->app->configure('wechat_subscribe_template');
+        // Auto configuration with lumen framework.
+
+        if (Str::contains($this->app->version(), 'Lumen')) {
+            $this->app->configure("wechat_subscribe_template");
         }
-
-        $this->mergeConfigFrom($source, 'wechat_subscribe_template');
     }
 }

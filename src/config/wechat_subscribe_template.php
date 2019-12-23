@@ -6,7 +6,9 @@
  *  [
  *      "tid" => '',
  *      'keywords' => [],
- *      'scenes' => []
+ *      'scenes' => [],
+ *      'type' => Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotifications::TYPES[2],
+ *      'name' => ''
  *  ]
  *]
  */
@@ -15,7 +17,9 @@ return [
         [
             "tid" => '',
             'keywords' => [],
-            'scenes' => []
+            'scenes' => [],
+            'type' => Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotifications::TYPES[2],
+            'name' => ''
         ]
     ]
 ];

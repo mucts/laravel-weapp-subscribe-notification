@@ -92,20 +92,16 @@ class SubscribeChannel
     /**
      * 添加模版消息
      *
-     * @param string $appId
-     * @param string $tid
-     * @param array $keywords
-     * @param array|null $sceneDesc
+     * @param SubscribeTemple $subscribeTemple
      * @return PriTmpl|null
      */
-    public function addPriTmpl(string $appId, string $tid, array $keywords, ?array $sceneDesc = null)
+    public function addPriTmpl(SubscribeTemple $subscribeTemple)
     {
-        $cacheKey = sprintf(self::CACHE_SUBSCRIBE_TMPL_ID_KEY, $appId, $tid);
-        return Cache::rememberForever($cacheKey, function () use ($appId, $tid, $keywords, $sceneDesc) {
-            $miniProgram = EasyWeChat::miniProgram($this->getConfigName($appId));
-            $title = $this->getPriTmplTitle($appId, $tid);
-            $keywords = (new PriTmplKeywords($tid, $title, $this->getPriTmplKeyWords($appId, $tid)))->setKeywords($keywords);
-            $res = $miniProgram->subscribe_message->addTemplate($tid, $keywords->getKids(), config('app.name') . ($sceneDesc ? implode(',', $sceneDesc) : $keywords->getName()));
+        $cacheKey = sprintf(self::CACHE_SUBSCRIBE_TMPL_ID_KEY, $subscribeTemple->getAppId(), $subscribeTemple->getTid());
+        return Cache::rememberForever($cacheKey, function () use ($subscribeTemple) {
+            $miniProgram = EasyWeChat::miniProgram($this->getConfigName($subscribeTemple->getAppId()));
+            $keywords = (new PriTmplKeywords($subscribeTemple->getTid(), $subscribeTemple->getType(), $subscribeTemple->getName(), $this->getPriTmplKeyWords($subscribeTemple->getAppId(), $subscribeTemple->getTid())))->setKeywords($subscribeTemple->getKeywords());
+            $res = $miniProgram->subscribe_message->addTemplate($subscribeTemple->getAppId(), $keywords->getKids(), config('app.name') . ($subscribeTemple->getSceneValue() ?: $keywords->getName()));
             if (isset($res['errcode']) && $res['errcode'] != 0) {
                 throw new \Exception($res['errmsg'], $res['errcode']);
             }

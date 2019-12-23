@@ -78,13 +78,12 @@ class WeAppSubscribeNotifications extends Model
                 $template->update(['scenes' => $subscribeTemple->getScenes()]);
             }
         } else {
-            $priTmpl = (new SubscribeChannel())->addPriTmpl($subscribeTemple->getHash(), $subscribeTemple->getTid(), $subscribeTemple->getKeywords(), $subscribeTemple->getScenes());
-            $type = $priTmpl->getPriTmplKeywords()->getType();
+            $priTmpl = (new SubscribeChannel())->addPriTmpl($subscribeTemple);
             $template = self::create([
                 'app_id' => $subscribeTemple->getAppId(),
                 'tid' => $subscribeTemple->getTid(),
-                'title' => $priTmpl->getPriTmplKeywords()->getName(),
-                'type' => isset(self::TYPES[$type]) ? self::TYPES[$type] : $type,
+                'title' => $subscribeTemple->getName(),
+                'type' => $subscribeTemple->getType(),
                 'pri_tmpl_id' => $priTmpl->getPriTmplId(),
                 'hash' => $subscribeTemple->getHash(),
                 'content' => $priTmpl->getPriTmplKeywords()->getContent()->all(),
@@ -116,7 +115,7 @@ class WeAppSubscribeNotifications extends Model
             }
             return (new PriTmpl())
                 ->setPriTmplId($template->pri_tmpl_id)
-                ->setPriTmplKeywords((new PriTmplKeywords($template->tid, ['title' => $template->title, 'type' => $template->type], $template->content)));
+                ->setPriTmplKeywords((new PriTmplKeywords($template->tid, $template->type, $template->title, $template->content)));
         });
     }
 
