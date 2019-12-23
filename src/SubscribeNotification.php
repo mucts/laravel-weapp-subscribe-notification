@@ -4,8 +4,6 @@
 namespace Friendsmore\LaravelWeAppSubscribeNotification;
 
 
-use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
-
 interface SubscribeNotification
 {
     /**
@@ -39,12 +37,4 @@ interface SubscribeNotification
      * @return string
      */
     public function getScene($notifiable): string;
-
-    /**
-     * 获取模版信息
-     *
-     * @param $notifiable
-     * @return PriTmpl
-     */
-    public function getPriTmpl($notifiable): PriTmpl;
 }
