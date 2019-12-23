@@ -44,7 +44,8 @@ class SubscribeChannel
             if (is_null($priTmpl)) {
                 info(sprintf('send subscribe template info is null;tid:%s,keywords:%s', $message->getTid(), json_encode($message->getKeywords())));
             }
-            $message->setPriTmpl($priTmpl);
+            $message->setPriTmpl($priTmpl)
+                ->setPage($notification->getPage($notifiable));
 
             $collect->each(function (string $toUser) use ($message, $appId, $notification, $notifiable) {
                 if (is_null($toUser)) {

@@ -82,8 +82,7 @@ class SubscribeTemple
     public function setMessage(SubscribeMessage $subscribeMessage): SubscribeTemple
     {
         $this->setTid($subscribeMessage->getTid())
-            ->setKeywords($subscribeMessage->getKeywords())
-            ->setScenes($subscribeMessage->getScenes());
+            ->setKeywords($subscribeMessage->getKeywords());
         return $this;
     }
 

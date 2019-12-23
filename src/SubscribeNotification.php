@@ -37,4 +37,13 @@ interface SubscribeNotification
      * @return string
      */
     public function getScene($notifiable): string;
+
+    /**
+     * 获取跳转页面
+     *
+     * @param $notifiable
+     * @param null $data
+     * @return string|null
+     */
+    public function getPage($notifiable, $data = null): ?string;
 }
