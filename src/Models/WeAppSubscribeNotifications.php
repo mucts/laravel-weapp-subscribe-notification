@@ -5,10 +5,10 @@ namespace Friendsmore\LaravelWeAppSubscribeNotification\Models;
 
 
 use Friendsmore\LaravelBase\Model;
-use Friendsmore\laravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
-use Friendsmore\laravelWeAppSubscribeNotification\PriTmpl\PriTmplKeywords;
+use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
+use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmplKeywords;
 use Friendsmore\LaravelWeAppSubscribeNotification\SubscribeChannel;
-use Friendsmore\laravelWeAppSubscribeNotification\SubscribeTemple;
+use Friendsmore\LaravelWeAppSubscribeNotification\SubscribeTemple;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;

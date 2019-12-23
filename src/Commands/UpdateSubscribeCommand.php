@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Friendsmore\laravelWeAppSubscribeNotification\Commands;
+namespace Friendsmore\LaravelWeAppSubscribeNotification\Commands;
 
 
 use Carbon\Carbon;
-use Friendsmore\laravelWeAppSubscribeNotification\SubscribeTemple;
+use Friendsmore\LaravelWeAppSubscribeNotification\SubscribeTemple;
 use Illuminate\Console\Command;
 
 class UpdateSubscribeCommand extends Command

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Friendsmore\laravelWeAppSubscribeNotification;
+namespace Friendsmore\LaravelWeAppSubscribeNotification;
 
 
 use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotifications;

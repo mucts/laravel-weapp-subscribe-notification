@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Friendsmore\laravelWeAppSubscribeNotification\PriTmpl;
+namespace Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl;
 
 
 class PriTmpl

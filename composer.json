@@ -22,12 +22,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Friendsmore\\laravelWeAppSubscribeNotification\\": "src"
+            "Friendsmore\\LaravelWeAppSubscribeNotification\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Friendsmore\\laravelWeAppSubscribeNotification\\Test\\": "tests"
+            "Friendsmore\\LaravelWeAppSubscribeNotification\\Test\\": "tests"
         }
     },
     "repositories": {

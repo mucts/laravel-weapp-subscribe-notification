@@ -4,8 +4,8 @@
 namespace Friendsmore\LaravelWeAppSubscribeNotification;
 
 
-use Friendsmore\laravelWeAppSubscribeNotification\PriTmpl\PriKidInfo;
-use Friendsmore\laravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
+use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriKidInfo;
+use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 

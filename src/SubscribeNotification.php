@@ -4,7 +4,7 @@
 namespace Friendsmore\LaravelWeAppSubscribeNotification;
 
 
-use Friendsmore\laravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
+use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
 
 interface SubscribeNotification
 {

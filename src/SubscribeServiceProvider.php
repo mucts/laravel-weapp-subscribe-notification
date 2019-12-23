@@ -6,7 +6,7 @@ namespace Friendsmore\LaravelWeAppSubscribeNotification;
 
 use Friendsmore\LaravelWeAppSubscribeNotification\Commands\DropSubscribeCommand;
 use Friendsmore\LaravelWeAppSubscribeNotification\Commands\SubscribeTableCommand;
-use Friendsmore\laravelWeAppSubscribeNotification\Commands\UpdateSubscribeCommand;
+use Friendsmore\LaravelWeAppSubscribeNotification\Commands\UpdateSubscribeCommand;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Application as LaravelApplication;
 

@@ -4,8 +4,8 @@
 namespace Friendsmore\LaravelWeAppSubscribeNotification;
 
 
-use Friendsmore\laravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
-use Friendsmore\laravelWeAppSubscribeNotification\PriTmpl\PriTmplKeywords;
+use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
+use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmplKeywords;
 use Illuminate\Notifications\RoutesNotifications;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;

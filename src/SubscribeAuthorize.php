@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Friendsmore\laravelWeAppSubscribeNotification;
+namespace Friendsmore\LaravelWeAppSubscribeNotification;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
