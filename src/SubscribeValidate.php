@@ -4,11 +4,11 @@
 namespace Friendsmore\LaravelWeAppSubscribeMessage;
 
 
-use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotifications;
+use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
 
 class SubscribeValidate
 {
-    public static function validate(WeAppSubscribeNotifications $notifications, $data)
+    public static function validate(WeAppSubscribeNotification $notifications, $data)
     {
         $rules = collect();
         collect($notifications->content)->each(function ($value) use ($rules) {

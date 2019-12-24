@@ -5,7 +5,7 @@ namespace Friendsmore\LaravelWeAppSubscribeNotification\Commands;
 
 
 use Carbon\Carbon;
-use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotifications;
+use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -41,8 +41,8 @@ class DropSubscribeCommand extends Command
                     $bar->finish();
                 });
                 // 重构表结构并删除相应标签缓存
-                WeAppSubscribeNotifications::truncate();
-                Cache::tags(WeAppSubscribeNotifications::CACHE_FOR_TAGS)->flush();
+                WeAppSubscribeNotification::truncate();
+                Cache::tags(WeAppSubscribeNotification::CACHE_FOR_TAGS)->flush();
             });
         }
         $this->info('Destroy all WeApp subscribe information successfully At ' . Carbon::now()->toDateTimeString());

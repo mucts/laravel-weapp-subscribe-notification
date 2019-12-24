@@ -27,21 +27,21 @@ use Illuminate\Support\Facades\Cache;
  * @property array $content 模版内容，格式:[{"kid":"2","name":"会议时间","rule":"date"}]
  * @property string $type 模版类型，2 one_time 为一次性订阅|3 long_term 为长期订阅
  * @property array $scenes 授权场景
- * @method static Builder|WeAppSubscribeNotifications newModelQuery()
- * @method static Builder|WeAppSubscribeNotifications newQuery()
- * @method static Builder|WeAppSubscribeNotifications query()
- * @method static Builder|WeAppSubscribeNotifications whereAppId($value)
- * @method static Builder|WeAppSubscribeNotifications whereContent($value)
- * @method static Builder|WeAppSubscribeNotifications whereCreatedAt($value)
- * @method static Builder|WeAppSubscribeNotifications whereId($value)
- * @method static Builder|WeAppSubscribeNotifications whereHash($value)
- * @method static Builder|WeAppSubscribeNotifications wherePriTmplId($value)
- * @method static Builder|WeAppSubscribeNotifications whereTid($value)
- * @method static Builder|WeAppSubscribeNotifications whereTitle($value)
- * @method static Builder|WeAppSubscribeNotifications whereUpdatedAt($value)
+ * @method static Builder|WeAppSubscribeNotification newModelQuery()
+ * @method static Builder|WeAppSubscribeNotification newQuery()
+ * @method static Builder|WeAppSubscribeNotification query()
+ * @method static Builder|WeAppSubscribeNotification whereAppId($value)
+ * @method static Builder|WeAppSubscribeNotification whereContent($value)
+ * @method static Builder|WeAppSubscribeNotification whereCreatedAt($value)
+ * @method static Builder|WeAppSubscribeNotification whereId($value)
+ * @method static Builder|WeAppSubscribeNotification whereHash($value)
+ * @method static Builder|WeAppSubscribeNotification wherePriTmplId($value)
+ * @method static Builder|WeAppSubscribeNotification whereTid($value)
+ * @method static Builder|WeAppSubscribeNotification whereTitle($value)
+ * @method static Builder|WeAppSubscribeNotification whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class WeAppSubscribeNotifications extends Model
+class WeAppSubscribeNotification extends Model
 {
     const CACHE_FOR_WE_APP_TMPL_NOTIFICATIONS = 'CACHE_FOR_WE_APP_SUBSCRIBE_TMPL_NOTIFICATIONS:%s';
     const CACHE_FOR_TAGS = ['we_app_subscribe_tmpl'];

@@ -18,7 +18,7 @@ return [
             "tid" => '',
             'keywords' => [],
             'scenes' => [],
-            'type' => Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotifications::TYPES[2],
+            'type' => Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification::TYPES[2],
             'name' => ''
         ]
     ]

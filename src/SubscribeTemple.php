@@ -4,7 +4,7 @@
 namespace Friendsmore\LaravelWeAppSubscribeNotification;
 
 
-use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotifications;
+use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
 use Illuminate\Support\Str;
 
 class SubscribeTemple
@@ -24,7 +24,7 @@ class SubscribeTemple
 
     public function __construct()
     {
-        $this->setType(WeAppSubscribeNotifications::TYPES[2]);
+        $this->setType(WeAppSubscribeNotification::TYPES[2]);
     }
 
     public function setTid(string $tid): SubscribeTemple
@@ -115,11 +115,11 @@ class SubscribeTemple
 
     public function updateOrCreate()
     {
-        return WeAppSubscribeNotifications::updateOrCreatePriTmpl($this);
+        return WeAppSubscribeNotification::updateOrCreatePriTmpl($this);
     }
 
     public function getPriTemp()
     {
-        return WeAppSubscribeNotifications::getPriTmpl($this->getHash());
+        return WeAppSubscribeNotification::getPriTmpl($this->getHash());
     }
 }
