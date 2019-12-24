@@ -11,7 +11,7 @@ class SubscribeAuthorize
     const CACHE_FOR_AUTH_RESULT = 'WE_APP_SUBSCRIBE_FOR_AUTHORIZE_RESULT:%s:%s:%s:%s:%s';
 
     // 授权过期时间
-    const EXPIRY_TIME = 30 * 24 * 60 * 60;
+    const EXPIRY_TIME = 6 * 30 * 24 * 60 * 60;
 
     /**
      * 校验授权结果
@@ -47,7 +47,7 @@ class SubscribeAuthorize
      */
     public static function getCacheKey(string $appId, string $scene, string $priTmplId, ?string $sceneId, string $openId)
     {
-        return sprintf(self::CACHE_FOR_AUTH_RESULT, $appId, $priTmplId, $scene, $sceneId, $openId);
+        return sprintf(self::CACHE_FOR_AUTH_RESULT, $appId, $priTmplId, $scene, strval($sceneId), $openId);
     }
 
     /**
@@ -63,6 +63,10 @@ class SubscribeAuthorize
     public static function hadAutoPriTmplId(string $appId, string $priTmplId, string $scene, ?string $sceneId, string $openId)
     {
         $cacheKey = self::getCacheKey($appId, $priTmplId, $scene, $sceneId, $openId);
+        if (Cache::has($cacheKey)) {
+            return true;
+        }
+        $cacheKey = self::getCacheKey($appId, $priTmplId, $scene, null, $openId);
         return Cache::has($cacheKey);
     }
 
@@ -79,7 +83,11 @@ class SubscribeAuthorize
 
     public static function getPriTmplId(string $appId, string $priTmplId, string $scene, ?string $sceneId, string $openId)
     {
-        $cacheKey = self::getCacheKey($appId, $scene, $priTmplId, $sceneId, $openId);
+        $cacheKey = self::getCacheKey($appId, $priTmplId, $scene, $sceneId, $openId);
+        if (Cache::has($cacheKey)) {
+            return Cache::forget($cacheKey);
+        }
+        $cacheKey = self::getCacheKey($appId, $priTmplId, $scene, null, $openId);
         return Cache::has($cacheKey) ? Cache::forget($cacheKey) : null;
     }
 }
