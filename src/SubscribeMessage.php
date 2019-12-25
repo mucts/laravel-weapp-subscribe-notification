@@ -125,6 +125,7 @@ class SubscribeMessage implements Arrayable
             ->all();
     }
 
+
     /**
      * get subscribe message keyword data
      *
@@ -141,10 +142,10 @@ class SubscribeMessage implements Arrayable
         switch ($rule) {
             // 20个以内字符 	可汉字、数字、字母或符号组合
             case 'thing':
-                if (mb_strwidth($value, 'UTF-8') <= 20) {
+                if (mb_strlen($value, 'UTF-8') <= 20) {
                     return $value;
                 }
-                return Str::limit($value, 17);
+                return mb_substr($value, 0, 17, 'UTF-8') . '...';
             // 32位以内字母 	只能字母
             case 'letter':
                 return Str::limit($value, 32, '');
@@ -156,6 +157,10 @@ class SubscribeMessage implements Arrayable
                 return Str::limit($value, 29);
             // 5位以内符号 	只能符号
             case 'phrase':
+                if (mb_strlen($value, 'UTF-8') <= 5) {
+                    return $value;
+                }
+                return mb_substr($value, 0, 5, 'UTF-8');
             case 'symbol':
                 return Str::limit($value, 5, '');
             // 17位以内，数字、符号 	电话号码，例：+86-0766-66888866
@@ -163,7 +168,7 @@ class SubscribeMessage implements Arrayable
                 return Str::limit($value, 17, '');
             // 8位以内，第一位与最后一位可为汉字，其余为字母或数字 	车牌号码：粤A8Z888挂
             case 'car_number':
-                return Str::limit($value, 8, '');
+                return mb_substr($value, 0, 8, 'UTF-8');
             // 10个以内纯汉字或20个以内纯字母或符号 	中文名10个汉字内；纯英文名20个字母内；中文和字母混合按中文名算，10个字内
             case 'name':
                 if (preg_match('/^[a-zA-Z]$/', $value)) {
@@ -172,10 +177,10 @@ class SubscribeMessage implements Arrayable
                     }
                     return Str::limit($value, 17);
                 }
-                if (mb_strwidth($value, 'UTF-8') <= 10) {
+                if (mb_strlen($value, 'UTF-8') <= 10) {
                     return $value;
                 }
-                return Str::limit($value, 7);
+                return mb_substr($value, 0, 10, 'UTF-8');
             // 5个以内汉字 	5个以内纯汉字，例如：配送中
             default:
                 return $value;
