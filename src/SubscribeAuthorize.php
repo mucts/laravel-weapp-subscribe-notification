@@ -21,10 +21,11 @@ class SubscribeAuthorize
      * @param string $sceneId
      * @param array $priTmplIdsResult
      * @param string $openId
+     * @return int
      */
-    public static function subscribeAuthorizationResult(string $appId, string $scene, string $sceneId, array $priTmplIdsResult, string $openId): void
+    public static function subscribeAuthorizationResult(string $appId, string $scene, string $sceneId, array $priTmplIdsResult, string $openId): int
     {
-        collect($priTmplIdsResult)
+        return collect($priTmplIdsResult)
             ->filter(function ($value) {
                 return Str::lower($value) == 'accept';
             })
@@ -32,7 +33,7 @@ class SubscribeAuthorize
             ->map(function ($priTmpId) use ($appId, $scene, $sceneId, $openId) {
                 $cacheKey = self::getCacheKey($appId, $scene, $priTmpId, $sceneId, $openId);
                 Cache::put($cacheKey, $priTmpId, self::EXPIRY_TIME);
-            });
+            })->count();
     }
 
     /**
