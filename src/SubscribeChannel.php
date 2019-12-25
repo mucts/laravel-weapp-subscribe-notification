@@ -52,7 +52,7 @@ class SubscribeChannel
                     return;
                 }
                 if (!SubscribeAuthorize::hadAutoPriTmplId($appId, $message->getPriTmplId(), $notification->getScene($notifiable), $notification->getSceneId($notifiable), $toUser)) {
-                    info('User not authorized,pri_tmpl_id:%s,openid:%s', $message->getPriTmplId(), $toUser);
+                    info(sprintf('User not authorized,pri_tmpl_id:%s,openid:%s', $message->getPriTmplId(), $toUser));
                     return;
                 }
                 $message->setToUser($toUser);
