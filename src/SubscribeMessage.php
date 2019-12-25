@@ -8,6 +8,7 @@ use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriKidInfo;
 use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class SubscribeMessage implements Arrayable
 {
@@ -117,7 +118,7 @@ class SubscribeMessage implements Arrayable
             ->map(function (PriKidInfo $info) {
                 return [
                     'key' => $info->getKey(),
-                    'data' => ['value' => $this->getData($info->getName())]
+                    'data' => ['value' => $this->getData($info->getName(), $info->getRule())]
                 ];
             })
             ->pluck('data', 'key')
@@ -128,11 +129,55 @@ class SubscribeMessage implements Arrayable
      * get subscribe message keyword data
      *
      * @param string $key
+     * @param string $rule
      * @return string|null
      */
-    private function getData(string $key): ?string
+    private function getData(string $key, string $rule): ?string
     {
-        return isset($this->datum[$key]) ? $this->datum[$key] : null;
+        $value = isset($this->datum[$key]) ? $this->datum[$key] : null;
+        if (!$value) return null;
+        switch ($rule) {
+            // 20个以内字符 	可汉字、数字、字母或符号组合
+            case 'thing':
+                if (mb_strwidth($value, 'UTF-8') <= 20) {
+                    return $value;
+                }
+                return Str::limit($value, 17);
+            // 32位以内字母 	只能字母
+            case 'letter':
+                return Str::limit($value, 32, '');
+            // 32位以内数字、字母或符号 	可数字、字母或符号组合
+            case 'character_string':
+                if (strlen($value) <= 32) {
+                    return $value;
+                }
+                return Str::limit($value, 29);
+            // 5位以内符号 	只能符号
+            case 'phrase':
+            case 'symbol':
+                return Str::limit($value, 5, '');
+            // 17位以内，数字、符号 	电话号码，例：+86-0766-66888866
+            case 'phone_number':
+                return Str::limit($value, 17, '');
+            // 8位以内，第一位与最后一位可为汉字，其余为字母或数字 	车牌号码：粤A8Z888挂
+            case 'car_number':
+                return Str::limit($value, 8, '');
+            // 10个以内纯汉字或20个以内纯字母或符号 	中文名10个汉字内；纯英文名20个字母内；中文和字母混合按中文名算，10个字内
+            case 'name':
+                if (preg_match('/^[a-zA-Z]$/', $value)) {
+                    if (strlen($value) <= 20) {
+                        return $value;
+                    }
+                    return Str::limit($value, 17);
+                }
+                if (mb_strwidth($value, 'UTF-8') <= 10) {
+                    return $value;
+                }
+                return Str::limit($value, 7);
+            // 5个以内汉字 	5个以内纯汉字，例如：配送中
+            default:
+                return $value;
+        }
     }
 
     /**
