@@ -31,7 +31,7 @@ class SubscribeAuthorize
             })
             ->keys()
             ->map(function ($priTmpId) use ($appId, $scene, $sceneId, $openId) {
-                $cacheKey = self::getCacheKey($appId, $scene, $priTmpId, $sceneId, $openId);
+                $cacheKey = self::getCacheKey($appId, $priTmpId, $scene, $sceneId, $openId);
                 Cache::put($cacheKey, $priTmpId, self::EXPIRY_TIME);
             })->count();
     }
@@ -46,7 +46,7 @@ class SubscribeAuthorize
      * @param string $openId
      * @return string
      */
-    public static function getCacheKey(string $appId, string $scene, string $priTmplId, ?string $sceneId, string $openId)
+    public static function getCacheKey(string $appId, string $priTmplId, string $scene, ?string $sceneId, string $openId)
     {
         return sprintf(self::CACHE_FOR_AUTH_RESULT, $appId, $priTmplId, $scene, strval($sceneId), $openId);
     }
