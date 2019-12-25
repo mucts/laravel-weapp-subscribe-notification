@@ -6,7 +6,6 @@ namespace Friendsmore\LaravelWeAppSubscribeNotification;
 
 use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
 use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmplKeywords;
-use Illuminate\Notifications\RoutesNotifications;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Overtrue\LaravelWeChat\Facade as EasyWeChat;
@@ -18,7 +17,8 @@ class SubscribeChannel
     const CACHE_SUBSCRIBE_TMPL_ID_KEY = 'WE_APP_SUBSCRIBE_TMPL_ID:%s';
     const CACHE_SUBSCRIBE_TMPL_TITLE_KEY = 'WE_APP_SUBSCRIBE_TMPL_TITLE:%s';
 
-    public function send(RoutesNotifications $notifiable, SubscribeNotification $notification): void
+
+    public function send($notifiable, SubscribeNotification $notification): void
     {
         $message = $notification->toWeAppSubscribeMessage($notifiable);
         if (is_null($message)) {
