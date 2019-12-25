@@ -14,8 +14,6 @@ use Illuminate\Support\Collection;
 class SubscribeChannel
 {
     const CACHE_SUBSCRIBE_TMPL_TID_KEY = 'WE_APP_SUBSCRIBE_TMPL_MSG_TID:%s';
-    const CACHE_SUBSCRIBE_TMPL_ID_KEY = 'WE_APP_SUBSCRIBE_TMPL_ID:%s';
-    const CACHE_SUBSCRIBE_TMPL_TITLE_KEY = 'WE_APP_SUBSCRIBE_TMPL_TITLE:%s';
 
 
     public function send($notifiable, SubscribeNotification $notification): void
@@ -93,20 +91,20 @@ class SubscribeChannel
      * 添加模版消息
      *
      * @param SubscribeTemple $subscribeTemple
-     * @return PriTmpl|null
+     * @return PriTmpl
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidConfigException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function addPriTmpl(SubscribeTemple $subscribeTemple)
     {
-        $cacheKey = sprintf(self::CACHE_SUBSCRIBE_TMPL_ID_KEY, $subscribeTemple->getHash());
-        return Cache::rememberForever($cacheKey, function () use ($subscribeTemple) {
-            $miniProgram = EasyWeChat::miniProgram($this->getConfigName($subscribeTemple->getAppId()));
-            $keywords = (new PriTmplKeywords($subscribeTemple->getTid(), $subscribeTemple->getType(), $subscribeTemple->getName(), $this->getPriTmplKeyWords($subscribeTemple->getAppId(), $subscribeTemple->getTid())))->setKeywords($subscribeTemple->getKeywords());
-            $res = $miniProgram->subscribe_message->addTemplate($subscribeTemple->getTid(), $keywords->getKids(), $subscribeTemple->getSceneValue());
-            if (isset($res['errcode']) && $res['errcode'] != 0) {
-                throw new \Exception($res['errmsg'], $res['errcode']);
-            }
-            return (new PriTmpl())->setPriTmplId($res['priTmplId'])->setPriTmplKeywords($keywords);
-        });
+        $miniProgram = EasyWeChat::miniProgram($this->getConfigName($subscribeTemple->getAppId()));
+        $keywords = (new PriTmplKeywords($subscribeTemple->getTid(), $subscribeTemple->getType(), $subscribeTemple->getName(), $this->getPriTmplKeyWords($subscribeTemple->getAppId(), $subscribeTemple->getTid())))->setKeywords($subscribeTemple->getKeywords());
+        $res = $miniProgram->subscribe_message->addTemplate($subscribeTemple->getTid(), $keywords->getKids(), $subscribeTemple->getSceneValue());
+        if (isset($res['errcode']) && $res['errcode'] != 0) {
+            throw new \Exception($res['errmsg'], $res['errcode']);
+        }
+        return (new PriTmpl())->setPriTmplId($res['priTmplId'])->setPriTmplKeywords($keywords);
+
     }
 
     /**
@@ -126,26 +124,6 @@ class SubscribeChannel
                 throw new \Exception($res['errmsg'], $res['errcode']);
             }
             return $res['data'];
-        });
-    }
-
-    /**
-     * 模板标题
-     *
-     * @param string $appId
-     * @param string $tid
-     * @return array|null
-     */
-    public function getPriTmplTitle(string $appId, string $tid): ?array
-    {
-        $cacheKey = sprintf(self::CACHE_SUBSCRIBE_TMPL_TITLE_KEY, $tid);
-        return Cache::rememberForever($cacheKey, function () use ($appId, $tid) {
-            $miniProgram = EasyWeChat::miniProgram($this->getConfigName($appId));
-            $res = $miniProgram->subscribe_message->getTemplateTitles([$tid]);
-            if (isset($res['errcode']) && $res['errcode'] != 0) {
-                throw new \Exception($res['errmsg'], $res['errcode']);
-            }
-            return $res['data'][0];
         });
     }
 
