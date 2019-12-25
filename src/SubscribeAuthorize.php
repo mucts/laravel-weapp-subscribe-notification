@@ -23,7 +23,7 @@ class SubscribeAuthorize
      * @param string $openId
      * @return int
      */
-    public static function subscribeAuthorizationResult(string $appId, string $scene, string $sceneId, array $priTmplIdsResult, string $openId): int
+    public static function subscribeAuthorizationResult(string $appId, string $scene, ?string $sceneId, array $priTmplIdsResult, string $openId): int
     {
         return collect($priTmplIdsResult)
             ->filter(function ($value) {
