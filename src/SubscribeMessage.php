@@ -135,7 +135,9 @@ class SubscribeMessage implements Arrayable
     private function getData(string $key, string $rule): ?string
     {
         $value = isset($this->datum[$key]) ? $this->datum[$key] : null;
-        if (!$value) return null;
+        if (is_null($value)) {
+            return null;
+        }
         switch ($rule) {
             // 20个以内字符 	可汉字、数字、字母或符号组合
             case 'thing':
