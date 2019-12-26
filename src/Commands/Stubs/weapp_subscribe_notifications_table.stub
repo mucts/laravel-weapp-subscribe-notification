@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateWeappSubscribeNotificationsTable extends Migration
+class CreateWeAppSubscribeNotificationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -20,11 +20,11 @@ class CreateWeappSubscribeNotificationsTable extends Migration
             $table->string('tid', 12)->comment('模板库标题ID');
             $table->string('title', 32)->nullable()->comment('模版标题');
             $table->unsignedTinyInteger('type')->comment('模版类型，2 one_time 为一次性订阅|3 long_term 为长期订阅');
-            $table->string('pri_tmpl_id', 64)->index()->comment('订阅模版ID');
-            $table->string('hash')->index()->comment('模板标识(模板标题ID与模板关键词列表MD5产生)');
+            $table->string('pri_tmpl_id', 64)->index('idx_pri_tmpl_id')->comment('订阅模版ID');
+            $table->string('hash')->index('idx_hash')->comment('模板标识(模板标题ID与模板关键词列表MD5产生)');
             $table->json('content')->comment('模版内容，格式:[{"kid":"2","name":"会议时间","rule":"date"}]');
             $table->json('scenes')->comment('场景，格式：["order","refund","group_order"]');
-            $table->unique(['app_id', 'hash']);
+            $table->unique(['app_id', 'hash'],'idx_unique_id');
         });
     }
 

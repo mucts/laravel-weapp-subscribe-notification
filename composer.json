@@ -7,6 +7,7 @@
         "ext-json": "^1.6",
         "laravel/lumen-framework": "5.8.*",
         "overtrue/laravel-wechat": "~5.0",
+        "predis/predis": "^1.1",
         "friendsmore/laravel-base": "^2.0"
     },
     "require-dev": {

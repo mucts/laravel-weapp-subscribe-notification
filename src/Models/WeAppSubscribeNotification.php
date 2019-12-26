@@ -43,7 +43,7 @@ use Illuminate\Support\Facades\Cache;
  */
 class WeAppSubscribeNotification extends Model
 {
-    const CACHE_FOR_WE_APP_TMPL_NOTIFICATIONS = 'CACHE_FOR_WE_APP_SUBSCRIBE_TMPL_NOTIFICATIONS:%s';
+    const CACHE_FOR_WE_APP_TMPL_NOTIFICATIONS = 'WE:APP:SUB:TMP:%S';
     const CACHE_FOR_TAGS = ['we_app_subscribe_tmpl'];
 
     const TYPES = [

@@ -3,12 +3,12 @@
 
 namespace Friendsmore\LaravelWeAppSubscribeNotification;
 
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 
 class SubscribeAuthorize
 {
-    const CACHE_FOR_AUTH_RESULT = 'WE_APP_SUBSCRIBE_FOR_AUTHORIZE_RESULT:%s:%s:%s:%s:%s';
+    const CACHE_FOR_AUTH_RESULT = 'WE:APP:SUB:RES:%s';
 
     // 授权过期时间
     const EXPIRY_TIME = 6 * 30 * 24 * 60 * 60;
@@ -32,7 +32,7 @@ class SubscribeAuthorize
             ->keys()
             ->map(function ($priTmpId) use ($appId, $scene, $sceneId, $openId) {
                 $cacheKey = self::getCacheKey($appId, $priTmpId, $scene, $sceneId, $openId);
-                Cache::put($cacheKey, $priTmpId, self::EXPIRY_TIME);
+                self::incrPriTmplCache($cacheKey);
             })->count();
     }
 
@@ -48,7 +48,7 @@ class SubscribeAuthorize
      */
     public static function getCacheKey(string $appId, string $priTmplId, string $scene, ?string $sceneId, string $openId)
     {
-        return sprintf(self::CACHE_FOR_AUTH_RESULT, $appId, $priTmplId, $scene, strval($sceneId), $openId);
+        return sprintf(self::CACHE_FOR_AUTH_RESULT, md5(json_encode([$appId, $priTmplId, $scene, strval($sceneId), $openId], JSON_UNESCAPED_UNICODE)));
     }
 
     /**
@@ -64,11 +64,11 @@ class SubscribeAuthorize
     public static function hadAutoPriTmplId(string $appId, string $priTmplId, string $scene, ?string $sceneId, string $openId)
     {
         $cacheKey = self::getCacheKey($appId, $priTmplId, $scene, $sceneId, $openId);
-        if (Cache::has($cacheKey)) {
+        if (self::hadAuthorization($cacheKey)) {
             return true;
         }
         $cacheKey = self::getCacheKey($appId, $priTmplId, $scene, null, $openId);
-        return Cache::has($cacheKey);
+        return self::hadAuthorization($cacheKey);
     }
 
     /**
@@ -79,16 +79,38 @@ class SubscribeAuthorize
      * @param string $scene
      * @param string|null $sceneId
      * @param string $openId
-     * @return bool|null
      */
 
-    public static function getPriTmplId(string $appId, string $priTmplId, string $scene, ?string $sceneId, string $openId)
+    public static function decrPriTmplId(string $appId, string $priTmplId, string $scene, ?string $sceneId, string $openId)
     {
         $cacheKey = self::getCacheKey($appId, $priTmplId, $scene, $sceneId, $openId);
-        if (Cache::has($cacheKey)) {
-            return Cache::forget($cacheKey);
+        if (self::hadAuthorization($cacheKey)) {
+            self::decrPriTmplCache($cacheKey);
         }
         $cacheKey = self::getCacheKey($appId, $priTmplId, $scene, null, $openId);
-        return Cache::has($cacheKey) ? Cache::forget($cacheKey) : null;
+        self::hadAuthorization($cacheKey) && self::decrPriTmplCache($cacheKey);
+    }
+
+    private static function hadAuthorization(string $cacheKey)
+    {
+        $redis = Redis::connection();
+        return $redis->exists($cacheKey) ? true : false;
+    }
+
+    private static function incrPriTmplCache(string $cacheKey, int $incr = 1): void
+    {
+        $redis = Redis::connection();
+        $redis->incrby($cacheKey, $incr);
+        $redis->expire($cacheKey, self::EXPIRY_TIME);
+    }
+
+    private static function decrPriTmplCache(string $cacheKey, int $decr = 1): void
+    {
+        $redis = Redis::connection();
+        $redis->decrby($cacheKey, $decr);
+        $value = $redis->get($cacheKey);
+        if ($value <= 0) {
+            $redis->del([$cacheKey]);
+        }
     }
 }

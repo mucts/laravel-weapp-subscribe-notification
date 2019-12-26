@@ -13,7 +13,7 @@ use Illuminate\Support\Collection;
 
 class SubscribeChannel
 {
-    const CACHE_SUBSCRIBE_TMPL_TID_KEY = 'WE_APP_SUBSCRIBE_TMPL_MSG_TID:%s';
+    const CACHE_SUBSCRIBE_TMPL_TID_KEY = 'WE:APP:SUB:TID:%s';
 
 
     public function send($notifiable, SubscribeNotification $notification): void
@@ -69,7 +69,7 @@ class SubscribeChannel
                 }
                 // 若消息有发送频率限制，设置缓存
                 self::setRateLimited($rateLimitKey, $message->getRateLimit('tts'));
-                SubscribeAuthorize::getPriTmplId($appId, $message->getPriTmplId(), $notification->getScene($notifiable), $notification->getSceneId($notifiable), $toUser);
+                SubscribeAuthorize::decrPriTmplId($appId, $message->getPriTmplId(), $notification->getScene($notifiable), $notification->getSceneId($notifiable), $toUser);
             });
         }
     }
