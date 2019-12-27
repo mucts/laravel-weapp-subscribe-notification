@@ -41,6 +41,7 @@ class SubscribeChannel
                 ->getPriTemp();
             if (is_null($priTmpl)) {
                 info(sprintf('send subscribe template info is null;tid:%s,keywords:%s', $message->getTid(), json_encode($message->getKeywords())));
+                return;
             }
             $message->setPriTmpl($priTmpl);
 
