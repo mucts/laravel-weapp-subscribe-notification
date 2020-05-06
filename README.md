@@ -17,7 +17,7 @@
 ## 安装
 
 ```shell
-composer require MuCTS/laravel-weapp-subscribe-notification
+composer require mucts/laravel-weapp-subscribe-notification
 ```
 
 ### Laravel 配置方法
