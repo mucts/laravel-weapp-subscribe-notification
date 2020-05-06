@@ -31,12 +31,6 @@ composer require MuCTS/laravel-weapp-subscribe-notification
 $app->register(MuCTS\LaravelWeAppSubscribeNotification\SubscribeServiceProvider::class);
 ```
 
-### 生成订阅消息模版数据表迁移文件
-
-```shell
-php artisan weapp:subscribe:table
-```
-
 ### 模版配置文件
 
 文件名称：`config/wechat_subscribe_template.php`
