@@ -23,5 +23,12 @@
         "psr-4": {
             "MuCTS\\LaravelWeAppSubscribeNotification\\": "src"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MuCTS\\LaravelWeAppSubscribeNotification\\SubscribeServiceProvider"
+            ]
+        }
     }
 }
