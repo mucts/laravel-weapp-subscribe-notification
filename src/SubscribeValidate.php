@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Friendsmore\LaravelWeAppSubscribeMessage;
+namespace MuCTS\LaravelWeAppSubscribeMessage;
 
 
-use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
+use MuCTS\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
 
 class SubscribeValidate
 {

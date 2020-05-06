@@ -1,16 +1,16 @@
 <?php
 
 
-namespace Friendsmore\LaravelWeAppSubscribeNotification\Commands;
+namespace MuCTS\LaravelWeAppSubscribeNotification\Commands;
 
 
 use Carbon\Carbon;
-use Friendsmore\LaravelWeAppSubscribeNotification\SubscribeTemple;
+use MuCTS\LaravelWeAppSubscribeNotification\SubscribeTemple;
 use Illuminate\Console\Command;
 
 class UpdateSubscribeCommand extends Command
 {
-    protected $signature = 'weapp:subscribe:update';
+    protected $signature = 'mucts:weapp:subscribe:update';
 
     protected $description = 'Update wechat app subscribe template information';
 

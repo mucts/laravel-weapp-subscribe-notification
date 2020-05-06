@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Friendsmore\LaravelWeAppSubscribeNotification;
+namespace MuCTS\LaravelWeAppSubscribeNotification;
 
 
-use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
+use MuCTS\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
 use Illuminate\Support\Str;
 
 class SubscribeTemple

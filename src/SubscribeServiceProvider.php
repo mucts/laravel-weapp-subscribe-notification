@@ -1,44 +1,38 @@
 <?php
 
 
-namespace Friendsmore\LaravelWeAppSubscribeNotification;
+namespace MuCTS\LaravelWeAppSubscribeNotification;
 
 
-use Friendsmore\LaravelWeAppSubscribeNotification\Commands\DropSubscribeCommand;
-use Friendsmore\LaravelWeAppSubscribeNotification\Commands\SubscribeTableCommand;
-use Friendsmore\LaravelWeAppSubscribeNotification\Commands\UpdateSubscribeCommand;
+use MuCTS\LaravelWeAppSubscribeNotification\Commands\DropSubscribeCommand;
+use MuCTS\LaravelWeAppSubscribeNotification\Commands\UpdateSubscribeCommand;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
 
 class SubscribeServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        if (version_compare($this->app->version(), '5.1', ">=") or starts_with($this->app->version(), "Lumen")) {
-            if ($this->app->runningInConsole()) {
-                $this->commands([
-                    DropSubscribeCommand::class,
-                    SubscribeTableCommand::class,
-                    UpdateSubscribeCommand::class,
-                ]);
-            }
+        $this->mergeConfigFrom(
+            dirname(__DIR__) . '/config/wechat_subscribe_template.php', 'wechat_subscribe_template'
+        );
+        $this->publishes([
+            dirname(__DIR__) . '/migrations/' => database_path('migrations'),
+        ], 'migrations');
+        if ($this->app->runningInConsole()) {
+            $this->loadMigrationsFrom(dirname(__DIR__) . '/migrations/');
+            $this->commands([
+                DropSubscribeCommand::class,
+                UpdateSubscribeCommand::class,
+            ]);
         }
     }
 
     public function boot()
     {
-        $this->mergeConfigFrom(
-            dirname(__FILE__) . '/config/wechat_subscribe_template.php', 'wechat_subscribe_template'
-        );
-
-        $this->publishes([
-            dirname(__FILE__) . '/config/' => config_path(),
-        ], "wechat_subscribe_template.config");
-
-        // Auto configuration with lumen framework.
-
-        if (Str::contains($this->app->version(), 'Lumen')) {
-            $this->app->configure("wechat_subscribe_template");
+        if (!file_exists(config_path('wechat_subscribe_template.php'))) {
+            $this->publishes([
+                dirname(__DIR__) . '/config/wechat_subscribe_template.php' => config_path('wechat_subscribe_template.php'),
+            ], 'config');
         }
     }
 }

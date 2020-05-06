@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Friendsmore\LaravelWeAppSubscribeNotification\Commands;
+namespace MuCTS\LaravelWeAppSubscribeNotification\Commands;
 
 
 use Carbon\Carbon;
-use Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
+use MuCTS\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +14,7 @@ use Overtrue\LaravelWeChat\Facade as EasyWeChat;
 
 class DropSubscribeCommand extends Command
 {
-    protected $signature = 'weapp:subscribe:drop';
+    protected $signature = 'mucts:weapp:subscribe:drop';
     protected $description = 'Destroy all WeApp subscribe information ';
 
     public function handle()

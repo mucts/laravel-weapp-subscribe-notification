@@ -10,15 +10,14 @@
 4. Mbstring PHP Extension
 5. Redis >= 3.2.0
 6. MySQL >= 5.7.5
-7. laravel/lumen-framework  5.8.*
+7. laravel/framework  ^7.0
 9. overtrue/laravel-wechat  ~5.0
-10. friendsmore/laravel-base ^2.0
 11. predis/predis ^1.1
 
 ## 安装
 
 ```shell
-composer require friendsmore/laravel-weapp-subscribe-notification
+composer require MuCTS/laravel-weapp-subscribe-notification
 ```
 
 ### Laravel 配置方法
@@ -29,7 +28,7 @@ composer require friendsmore/laravel-weapp-subscribe-notification
 
 在 `bootstrap/app.php` 中增加：
 ```php
-$app->register(Friendsmore\LaravelWeAppSubscribeNotification\SubscribeServiceProvider::class);
+$app->register(MuCTS\LaravelWeAppSubscribeNotification\SubscribeServiceProvider::class);
 ```
 
 ### 生成订阅消息模版数据表迁移文件
@@ -51,7 +50,7 @@ return [
             "tid" => '',// 订阅消息模版库标题ID
             'keywords' => [],// 模版关键词
             'scenes' => [],// 场景
-            'type' => Friendsmore\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification::TYPES[2],// 消息类型
+            'type' => MuCTS\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification::TYPES[2],// 消息类型
             'name' => ''// 模版标题
         ]
     ]

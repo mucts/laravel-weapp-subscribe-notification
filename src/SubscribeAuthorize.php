@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Friendsmore\LaravelWeAppSubscribeNotification;
+namespace MuCTS\LaravelWeAppSubscribeNotification;
 
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;

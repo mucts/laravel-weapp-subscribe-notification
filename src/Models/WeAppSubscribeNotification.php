@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Friendsmore\LaravelWeAppSubscribeNotification\Models;
+namespace MuCTS\LaravelWeAppSubscribeNotification\Models;
 
 
-use Friendsmore\LaravelBase\Model;
-use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
-use Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl\PriTmplKeywords;
-use Friendsmore\LaravelWeAppSubscribeNotification\SubscribeChannel;
-use Friendsmore\LaravelWeAppSubscribeNotification\SubscribeTemple;
+use Illuminate\Database\Eloquent\Model;
+use MuCTS\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
+use MuCTS\LaravelWeAppSubscribeNotification\PriTmpl\PriTmplKeywords;
+use MuCTS\LaravelWeAppSubscribeNotification\SubscribeChannel;
+use MuCTS\LaravelWeAppSubscribeNotification\SubscribeTemple;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;

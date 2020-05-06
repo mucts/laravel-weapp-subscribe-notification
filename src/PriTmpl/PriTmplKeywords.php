@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Friendsmore\LaravelWeAppSubscribeNotification\PriTmpl;
+namespace MuCTS\LaravelWeAppSubscribeNotification\PriTmpl;
 
 
 use Illuminate\Contracts\Support\Arrayable;

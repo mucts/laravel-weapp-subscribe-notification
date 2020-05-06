@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Friendsmore\LaravelWeAppSubscribeNotification;
+namespace MuCTS\LaravelWeAppSubscribeNotification;
 
 
 interface SubscribeNotification
@@ -12,7 +12,7 @@ interface SubscribeNotification
      * @param $notifiable
      * @return string|null
      */
-    public function getWeappId($notifiable): ?string;
+    public function getWeAppId($notifiable): ?string;
 
     /**
      * 订阅消息参数设置
