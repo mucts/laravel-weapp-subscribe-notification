@@ -1,11 +1,11 @@
 <?php
 
 
-namespace MuCTS\LaravelWeAppSubscribeNotification\Commands;
+namespace MuCTS\Laravel\WeAppSubscribeNotification\Commands;
 
 
 use Carbon\Carbon;
-use MuCTS\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
+use MuCTS\Laravel\WeAppSubscribeNotification\Models\WeAppSubscribeNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;

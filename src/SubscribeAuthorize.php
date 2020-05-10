@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MuCTS\LaravelWeAppSubscribeNotification;
+namespace MuCTS\Laravel\WeAppSubscribeNotification;
 
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;

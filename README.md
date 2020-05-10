@@ -28,7 +28,7 @@ composer require mucts/laravel-weapp-subscribe-notification
 
 在 `bootstrap/app.php` 中增加：
 ```php
-$app->register(MuCTS\LaravelWeAppSubscribeNotification\SubscribeServiceProvider::class);
+$app->register(MuCTS\Laravel\WeAppSubscribeNotification\SubscribeServiceProvider::class);
 ```
 
 ### 模版配置文件
@@ -44,7 +44,7 @@ return [
             "tid" => '',// 订阅消息模版库标题ID
             'keywords' => [],// 模版关键词
             'scenes' => [],// 场景
-            'type' => MuCTS\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification::TYPES[2],// 消息类型
+            'type' => MuCTS\Laravel\WeAppSubscribeNotification\Models\WeAppSubscribeNotification::TYPES[2],// 消息类型
             'name' => ''// 模版标题
         ]
     ]

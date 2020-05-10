@@ -1,7 +1,7 @@
 <?php
 
 
-namespace MuCTS\LaravelWeAppSubscribeNotification;
+namespace MuCTS\Laravel\WeAppSubscribeNotification;
 
 
 interface SubscribeNotification

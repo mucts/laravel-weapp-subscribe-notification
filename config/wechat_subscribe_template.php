@@ -7,7 +7,7 @@
  *      "tid" => '',
  *      'keywords' => [],
  *      'scenes' => [],
- *      'type' => MuCTS\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotifications::TYPES[2],
+ *      'type' => MuCTS\Laravel\WeAppSubscribeNotification\Models\WeAppSubscribeNotifications::TYPES[2],
  *      'name' => ''
  *  ]
  *]
@@ -18,7 +18,7 @@ return [
             "tid" => '',
             'keywords' => [],
             'scenes' => [],
-            'type' => MuCTS\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification::TYPES[2],
+            'type' => MuCTS\Laravel\WeAppSubscribeNotification\Models\WeAppSubscribeNotification::TYPES[2],
             'name' => ''
         ]
     ]

@@ -1,11 +1,11 @@
 <?php
 
 
-namespace MuCTS\LaravelWeAppSubscribeNotification;
+namespace MuCTS\Laravel\WeAppSubscribeNotification;
 
 
-use MuCTS\LaravelWeAppSubscribeNotification\PriTmpl\PriKidInfo;
-use MuCTS\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
+use MuCTS\Laravel\WeAppSubscribeNotification\PriTmpl\PriKidInfo;
+use MuCTS\Laravel\WeAppSubscribeNotification\PriTmpl\PriTmpl;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;

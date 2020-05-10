@@ -1,11 +1,11 @@
 <?php
 
 
-namespace MuCTS\LaravelWeAppSubscribeNotification\Commands;
+namespace MuCTS\Laravel\WeAppSubscribeNotification\Commands;
 
 
 use Carbon\Carbon;
-use MuCTS\LaravelWeAppSubscribeNotification\SubscribeTemple;
+use MuCTS\Laravel\WeAppSubscribeNotification\SubscribeTemple;
 use Illuminate\Console\Command;
 
 class UpdateSubscribeCommand extends Command

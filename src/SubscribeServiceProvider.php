@@ -1,11 +1,11 @@
 <?php
 
 
-namespace MuCTS\LaravelWeAppSubscribeNotification;
+namespace MuCTS\Laravel\WeAppSubscribeNotification;
 
 
-use MuCTS\LaravelWeAppSubscribeNotification\Commands\DropSubscribeCommand;
-use MuCTS\LaravelWeAppSubscribeNotification\Commands\UpdateSubscribeCommand;
+use MuCTS\Laravel\WeAppSubscribeNotification\Commands\DropSubscribeCommand;
+use MuCTS\Laravel\WeAppSubscribeNotification\Commands\UpdateSubscribeCommand;
 use Illuminate\Support\ServiceProvider;
 
 class SubscribeServiceProvider extends ServiceProvider

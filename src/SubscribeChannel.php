@@ -1,11 +1,11 @@
 <?php
 
 
-namespace MuCTS\LaravelWeAppSubscribeNotification;
+namespace MuCTS\Laravel\WeAppSubscribeNotification;
 
 
-use MuCTS\LaravelWeAppSubscribeNotification\PriTmpl\PriTmpl;
-use MuCTS\LaravelWeAppSubscribeNotification\PriTmpl\PriTmplKeywords;
+use MuCTS\Laravel\WeAppSubscribeNotification\PriTmpl\PriTmpl;
+use MuCTS\Laravel\WeAppSubscribeNotification\PriTmpl\PriTmplKeywords;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 use Overtrue\LaravelWeChat\Facade as EasyWeChat;

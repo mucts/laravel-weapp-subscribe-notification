@@ -4,7 +4,7 @@
 namespace MuCTS\LaravelWeAppSubscribeMessage;
 
 
-use MuCTS\LaravelWeAppSubscribeNotification\Models\WeAppSubscribeNotification;
+use MuCTS\Laravel\WeAppSubscribeNotification\Models\WeAppSubscribeNotification;
 
 class SubscribeValidate
 {
