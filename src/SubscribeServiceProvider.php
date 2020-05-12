@@ -4,11 +4,12 @@
 namespace MuCTS\Laravel\WeAppSubscribeNotification;
 
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use MuCTS\Laravel\WeAppSubscribeNotification\Commands\DropSubscribeCommand;
 use MuCTS\Laravel\WeAppSubscribeNotification\Commands\UpdateSubscribeCommand;
 use Illuminate\Support\ServiceProvider;
 
-class SubscribeServiceProvider extends ServiceProvider
+class SubscribeServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     public function register()
     {
